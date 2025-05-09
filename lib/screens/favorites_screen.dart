@@ -1,12 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/models/tasks_model.dart';
 import 'package:tm/services/task_service.dart';
 
 class FavoritesScreen extends StatelessWidget {
-  final List<Task> favoriteTasks;
+
   const FavoritesScreen({
-    super.key,
-    required this.favoriteTasks,});
+    super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +46,8 @@ class TaskListView extends StatelessWidget {
           return const Center(child: Text('No tasks available.'));
         }
 
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+
         return ListView.builder(
           itemCount: tasks.length,
           itemBuilder: (context, index) {
@@ -64,6 +66,7 @@ class TaskListView extends StatelessWidget {
                   onPressed: () {
                     // Handle task completion toggle
                     Task updatedTask = Task(
+                      userId: userId.toString(),
                       name: task['name'],
                       description: task['description'],
                       isCompleted: !(task['isCompleted'] ?? false),
@@ -88,6 +91,7 @@ class TaskListView extends StatelessWidget {
                       onPressed: () {
                         // Add your delete action here
                         Task updatedTask = Task(
+                          userId: userId!,
                           name: task['name'],
                           description: task['description'],
                           isCompleted: task['isCompleted'],

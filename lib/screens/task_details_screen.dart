@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/models/tasks_model.dart';
 import 'package:tm/services/task_service.dart';
@@ -90,6 +91,8 @@ AlertDialog editScreen (BuildContext context, onTap, task) {
     // TextEditingController duedateController = TextEditingController();
     final TaskService taskService = TaskService();
 
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
     return AlertDialog(
       title: const Text('Edit Task'),
       content: SingleChildScrollView(
@@ -116,8 +119,11 @@ AlertDialog editScreen (BuildContext context, onTap, task) {
               child: const Text('Save'),
               onPressed:() async{
                 Task updatedTask = Task(
+                  userId: userId!,
                   name: nameController.text,
                   description: descriptionController.text,
+                  isCompleted: task['isCompleted'],
+                  isFavorite: task['isFavorite'],
                   // duedate: duedateController.text,
                 );
                 try {

@@ -1,12 +1,14 @@
 class Task {
-  final String id; // Optional: Firestore document ID
+  final String id;
+  final String userId; // Optional: Firestore document ID
   final String name;
   final String description;
   final bool isCompleted;
   final bool isFavorite; // Optional: For favorite tasks
 
   Task({
-    this.id = '', // default empty
+    this.id = '',
+    required this.userId,
     required this.name,
     required this.description,
     this.isCompleted = false,
@@ -17,6 +19,7 @@ class Task {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'userId': userId,
       'description': description,
       'isCompleted': isCompleted,
       'isFavorite': isFavorite,
@@ -27,6 +30,7 @@ class Task {
   factory Task.fromMap(Map<String, dynamic> map, {String id = ''}) {
     return Task(
       id: id,
+      userId: map['userId'] ?? '', // Optional: Firestore document ID
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       isCompleted: map['isCompleted'] ?? false,

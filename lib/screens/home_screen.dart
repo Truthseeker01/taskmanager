@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/models/tasks_model.dart';
 import 'package:tm/screens/task_details_screen.dart';
@@ -6,11 +7,8 @@ import 'package:tm/services/task_service.dart';
 
 class HomeScreen extends StatefulWidget {
 
-  final List <Task> testTasks;
-
   const HomeScreen({
     super.key,
-    required this.testTasks,
     });
 
   @override
@@ -55,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // TextEditingController duedateController = TextEditingController();
     final TaskService taskService = TaskService();
 
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
     return showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -82,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () async {
                       // Add your add action here
                       Task newTask = Task(
+                        userId: userId!,
                         name: nameController.text,
                         description: descriptionController.text,
                       );
@@ -134,6 +135,8 @@ class TaskListView extends StatelessWidget {
           return const Center(child: Text('No tasks available.'));
         }
 
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+
         return ListView.builder(
           itemCount: tasks.length,
           itemBuilder: (context, index) {
@@ -152,6 +155,7 @@ class TaskListView extends StatelessWidget {
                   onPressed: () {
                     // Handle task completion toggle
                     Task updatedTask = Task(
+                      userId: userId!,
                       name: task['name'],
                       description: task['description'],
                       isCompleted: !(task['isCompleted'] ?? false),
@@ -169,6 +173,7 @@ class TaskListView extends StatelessWidget {
                       onPressed: () {
                         // Handle task favorite toggle
                         Task updatedTask = Task(
+                          userId: userId!,
                           name: task['name'],
                           description: task['description'],
                           isFavorite: !(task['isFavorite']),

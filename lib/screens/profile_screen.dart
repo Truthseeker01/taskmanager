@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/models/tasks_model.dart';
 import 'package:tm/services/task_service.dart';
@@ -12,6 +14,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -22,13 +26,13 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
-                child: Text('JD'),
+                child: Text(currentUser != null && currentUser.email != null ? currentUser.email!.split('@').first : 'A'),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'John Doe',
+              Text(
+                currentUser != null && currentUser.email != null ? currentUser.email!.split('@').first : 'User',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),

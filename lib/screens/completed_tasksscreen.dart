@@ -1,13 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/models/tasks_model.dart';
 import 'package:tm/screens/task_details_screen.dart';
 import 'package:tm/services/task_service.dart';
 
 class CompletedTasksscreen extends StatelessWidget {
-  final List<Task> completedTasks;
+  
   const CompletedTasksscreen({
-    super.key,
-    required this.completedTasks,});
+    super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +50,8 @@ class TaskListView extends StatelessWidget {
           return const Center(child: Text('No tasks available.'));
         }
 
+        final userId = FirebaseAuth.instance.currentUser?.uid;
+
         return ListView.builder(
           itemCount: tasks.length,
           itemBuilder: (context, index) {
@@ -68,6 +70,7 @@ class TaskListView extends StatelessWidget {
                   onPressed: () {
                     // Handle task completion toggle
                     Task updatedTask = Task(
+                      userId: userId!,
                       name: task['name'],
                       description: task['description'],
                       isCompleted: !(task['isCompleted'] ?? false),

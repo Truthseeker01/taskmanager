@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tm/models/tasks_model.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -33,8 +34,12 @@ class TaskService {
   }
 
   Stream<List<Map<String, dynamic>>> getTasks() {
-    return _taskCollection.snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList());
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    return _taskCollection
+    .where('userId', isEqualTo: userId)
+    .snapshots().map((snapshot) =>
+        snapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>).toList());
   }
 
   Stream<List<Map<String, dynamic>>> getCompletedTasks() {
