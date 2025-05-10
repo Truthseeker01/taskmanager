@@ -68,7 +68,6 @@ class TaskListView extends StatelessWidget {
                   ),
                   color: (task['isCompleted'] ?? false) ? Colors.green : Colors.grey,
                   onPressed: () {
-                    // Handle task completion toggle
                     Task updatedTask = Task(
                       userId: userId!,
                       name: task['name'],

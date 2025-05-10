@@ -27,7 +27,7 @@ class MyDrawer extends StatelessWidget {
                 'Menu',
                 style: TextStyle(
                   color: textColor1,
-                  fontSize: 24, // Responsive font size
+                  fontSize: 24,
                 ),
               ),
             ),
@@ -35,24 +35,23 @@ class MyDrawer extends StatelessWidget {
               leading: Icon(Icons.home, color: textColor2),
               title: Text('Home', style: TextStyle(color: textColor2)),
               onTap: () {
-                Navigator.pop(context); // Close the drawer
+                Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.settings, color: textColor2),
               title: Text('Settings', style: TextStyle(color: textColor2)),
               onTap: () {
-                Navigator.pop(context); // Close the drawer
-                // Navigate to settings screen if implemented
+                Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.logout, color: textColor2),
               title: Text('Logout', style: TextStyle(color: textColor2)),
               onTap: () {
-                authService.signOut(); // Call the logout method from AuthService
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())); // Close the drawer
-                // Implement logout functionality here
+                authService.signOut(); 
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())); 
+              
               },
             ),
           ],

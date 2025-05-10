@@ -6,14 +6,12 @@ import 'package:tm/services/task_service.dart';
 class TaskDetailsScreen extends StatefulWidget {
   final String name;
   final String description;
-  // final String duedate;
   final Map<String, dynamic> task;
   const TaskDetailsScreen({
     super.key,
     required this.name,
     required this.description,
     required this.task,
-    // required this.duedate,
     });
 
   
@@ -43,6 +41,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   AlertDialog taskDetails(BuildContext context, onTap) {
     return AlertDialog(
     title: const Text('Task Details'),
+    icon: IconButton(onPressed: (){}, icon: Icon(Icons.check_circle)),
     content: SingleChildScrollView(
       child: ListBody(
         children: <Widget>[
@@ -50,7 +49,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           SizedBox(height: 10),
           Text(widget.description),
           SizedBox(height: 10),
-          // Text(widget.duedate),
         ],
       ),
     ),
@@ -88,7 +86,6 @@ AlertDialog editScreen (BuildContext context, onTap, task) {
 
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
-    // TextEditingController duedateController = TextEditingController();
     final TaskService taskService = TaskService();
 
     final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -130,7 +127,6 @@ AlertDialog editScreen (BuildContext context, onTap, task) {
                   await taskService.updateTask(task['id'].toString(), updatedTask);
                   print(updatedTask.toMap());
                 } catch (e) {
-                  // Handle error
                   print('Error updating task: $e');
                 }
 

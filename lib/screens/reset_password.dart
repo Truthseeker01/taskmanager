@@ -32,7 +32,6 @@ class ResetPassword extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                // Implement password reset logic here
                 try {
                   await authService.resetPassword(emailController.text);
                   ScaffoldMessenger.of(context).showSnackBar(

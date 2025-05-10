@@ -64,7 +64,6 @@ class TaskListView extends StatelessWidget {
                   ),
                   color: (task['isCompleted'] ?? false) ? Colors.green : Colors.grey,
                   onPressed: () {
-                    // Handle task completion toggle
                     Task updatedTask = Task(
                       userId: userId.toString(),
                       name: task['name'],
@@ -81,7 +80,6 @@ class TaskListView extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () {
-                        // Add your delete action here
                         TaskService().deleteTask(task['id']);
                       },
                     ),
@@ -89,13 +87,12 @@ class TaskListView extends StatelessWidget {
                       icon: const Icon(Icons.favorite),
                       color: Colors.red,
                       onPressed: () {
-                        // Add your delete action here
                         Task updatedTask = Task(
                           userId: userId!,
                           name: task['name'],
                           description: task['description'],
                           isCompleted: task['isCompleted'],
-                          isFavorite: false, // Set to false to remove from favorites
+                          isFavorite: false,
                         );
                         TaskService().updateTask(task['id'], updatedTask);
                       },

@@ -7,14 +7,6 @@ import 'package:tm/screens/login_screen.dart';
 import 'package:tm/screens/profile_screen.dart';
 import 'package:tm/services/auth_service.dart';
 
-// class Task {
-//   final String name;
-//   final String description;
-//   final bool isCompleted;
-
-//   Task({required this.name, required this.description, this.isCompleted = false});
-// }
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -45,10 +37,8 @@ class _MainScreenState extends State<MainScreen> {
       });
     }
     if (currentUser == null) {
-      // If the user is not logged in, redirect to the login screen
       return LoginScreen();
     } else {
-      // If the user is logged in, show the main screen
       return mainPage(backgroundColor, appBarColor, textColor1, textColor2, _onItemTapped);
 
 
@@ -85,29 +75,36 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
     ),
-    bottomNavigationBar: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.check_circle),
-          label: 'Completed',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
-          label: 'Favorites',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: appBarColor,
-      unselectedItemColor: textColor2,
-      onTap: _onItemTapped,
+    bottomNavigationBar: Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.09,
+      child: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        backgroundColor: Colors.blue,
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),  
+          BottomNavigationBarItem(
+            icon: Icon(Icons.check_circle),
+            label: 'Completed',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        // selectedItemColor: appBarColor,
+        unselectedItemColor: textColor1.withOpacity(0.7),
+        onTap: _onItemTapped,
+      ),
     ),
   );
   }

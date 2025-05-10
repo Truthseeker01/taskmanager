@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tm/screens/login_screen.dart';
 import 'package:tm/services/auth_service.dart';
@@ -63,7 +61,6 @@ class _SignupScreenState extends State<SignupScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              // Validate the input fields
               if (emailController.text.isEmpty || passwordController.text.isEmpty || confirmPasswordController.text.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please fill in all fields')));
                 return;
@@ -72,7 +69,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
                 return;
               }
-              // Call the sign-up method from AuthService
               try {
                 await authService.registerWithEmailAndPassword(emailController.text, passwordController.text);
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sign up successful')));
@@ -81,12 +77,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
               
               }
-            }, // Add your login logic here
+            }, 
             child: Text('Sign Up'),
           ),
           const SizedBox(height: 10),
           TextButton(onPressed:() {
-            // Add your sign-up navigation logic here
             Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
           }, 
           child: const Text('Already have an account? Sign in here.')

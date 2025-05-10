@@ -5,7 +5,6 @@ import 'package:tm/screens/main_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase or any other services here if needed
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -13,7 +12,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
