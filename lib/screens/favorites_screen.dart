@@ -43,7 +43,7 @@ class TaskListView extends StatelessWidget {
         final tasks = snapshot.data ?? [];
 
         if (tasks.isEmpty) {
-          return const Center(child: Text('No tasks available.'));
+          return const Center(child: Text('No Favorites'));
         }
 
         final userId = FirebaseAuth.instance.currentUser?.uid;

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tm/models/tasks_model.dart';
+import 'package:tm/screens/subtask_screen.dart';
 import 'package:tm/screens/task_details_screen.dart';
 import 'package:tm/services/task_service.dart';
 
@@ -23,6 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final Stream<List<Map<String, dynamic>>> tasksStream = taskService.getTasks();
 
+    final Color primaryColor = Color(0xFF00695c);
+    final Color secondaryColor = Color(0xFFFFFFFF);
+    final Color teritaoryColor = Color(0xFF212121);
+
 
     return Scaffold(
       body: Padding(padding: EdgeInsets.all(16.0),
@@ -35,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: screenWidth * 0.4,
                   child: Text(
                     'Welcome, ${FirebaseAuth.instance.currentUser?.email?.split('@').first ?? 'User'}',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: teritaoryColor),
                   ),
                 )
               ],
@@ -53,39 +58,45 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: recentTasks.map((task) {
-                                  return Container(
-                                    margin: const EdgeInsets.all(10.0),
-                                    padding: const EdgeInsets.all(30.0),
-                                    width: screenWidth * 0.3,
-                                    height: screenWidth * 0.3,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [Colors.blue, const Color.fromARGB(255, 40, 255, 255)],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // showDialog(context: context, builder: (context) => TaskDetailsScreen(name: task['name'], description: task['description'], task: task));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => SubtaskScreen(task: task)));
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.all(10.0),
+                                      padding: const EdgeInsets.all(30.0),
+                                      width: screenWidth * 0.3,
+                                      height: screenWidth * 0.3,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [primaryColor, teritaoryColor],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8.0),
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          task['name'] != '' ?
-                                          Text(
-                                             task['name'],
-                                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                            overflow: TextOverflow.ellipsis,
-                                          ) : Text('No Name'),
-                                          const SizedBox(height: 4.0),
-                                          task['description'] != '' ?
-                                          Text(
-                                            task['description'],
-                                            style: TextStyle(color: Colors.white70, fontSize: 12),
-                                            overflow: TextOverflow.ellipsis,
-                                          ) : Text('No Decription')
-                                        ],
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            task['name'] != '' ?
+                                            Text(
+                                               task['name'],
+                                              style: TextStyle(color: secondaryColor, fontSize: 20, fontWeight: FontWeight.bold),
+                                              overflow: TextOverflow.ellipsis,
+                                            ) : Text('No Name'),
+                                            const SizedBox(height: 4.0),
+                                            task['description'] != '' ?
+                                            Text(
+                                              task['description'],
+                                              style: TextStyle(color: secondaryColor.withAlpha(200), fontSize: 12),
+                                              overflow: TextOverflow.ellipsis,
+                                            ) : Text('No Decription')
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
@@ -100,25 +111,28 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             const Divider(thickness: 2),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'All Tasks',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: teritaoryColor),
             ),
             const SizedBox(height: 10),
             Expanded(
               child: TaskListView(
                 taskStream: tasksStream,
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+                teritaoryColor: teritaoryColor,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
+        backgroundColor: primaryColor,
         onPressed: () {
           addTask(context);
         },
-        child: Icon(Icons.add, color: Colors.white,),
+        child: Icon(Icons.add, color: secondaryColor,),
       ),
     );
   }
@@ -190,8 +204,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class TaskListView extends StatelessWidget {
   final Stream<List<Map<String, dynamic>>> taskStream;
+  final Color primaryColor;
+  final Color teritaoryColor;
+  final Color secondaryColor;
 
-  const TaskListView({super.key, required this.taskStream});
+  const TaskListView({
+    super.key, 
+    required this.taskStream,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.teritaoryColor,
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +253,7 @@ class TaskListView extends StatelessWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [Colors.blue, Colors.blueAccent], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                  gradient: LinearGradient(colors: [teritaoryColor, primaryColor], begin: Alignment.topLeft, end: Alignment.bottomRight),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -238,10 +261,10 @@ class TaskListView extends StatelessWidget {
                   color: Colors.transparent,
                   margin: EdgeInsets.zero,
                   child: ListTile(
-                    textColor: Colors.white,
+                    textColor: secondaryColor,
                     title: task['name'] != null && task['name'] != '' ? Text(task['name'], overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)) : Text('No Name'),
                     subtitle: Text(task['description'] ?? 'No description', overflow: TextOverflow.ellipsis,),
-                    leading: Icon(Icons.work, size: 50, color: Colors.blue,),
+                    leading: Icon(Icons.work, size: 50, color: secondaryColor,),
                     trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -263,9 +286,9 @@ class TaskListView extends StatelessWidget {
                     IconButton(
                     icon: Icon(
                       task['isCompleted'] ?? false ? Icons.check_box : Icons.check_box_outline_blank,
-                      color: Colors.white,
+                      color: secondaryColor,
                     ),
-                    color: Colors.white,
+                    // color: secondaryColor,
                     onPressed: () {
                       Task updatedTask = Task(
                         userId: userId!,

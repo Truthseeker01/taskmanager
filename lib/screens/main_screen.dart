@@ -21,17 +21,17 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final Color backgroundColor = Colors.white;
-    final Color appBarColor = Colors.blue;
-    final Color textColor1 = Colors.white;
-    final Color textColor2 = Colors.black;
+    final Color primaryColor = Color(0xFF00695c);
+    final Color secondaryColor = Color(0xFFFFFFFF);
+    final Color teritaoryColor = Color(0xFF212121);
+    // final Color textColor2 = Colors.black;
 
     final AuthService authService = AuthService();
     // Get the current user
     final currentUser = authService.getCurrentUser();
 
     
-    void _onItemTapped(int index) {
+    void onItemTapped(int index) {
       setState(() {
         _selectedIndex = index;
       });
@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
     if (currentUser == null) {
       return LoginScreen();
     } else {
-      return mainPage(backgroundColor, appBarColor, textColor1, textColor2, _onItemTapped);
+      return mainPage(primaryColor, secondaryColor, teritaoryColor, onItemTapped);
 
 
   }
@@ -50,21 +50,21 @@ class _MainScreenState extends State<MainScreen> {
 
   
 
-  Scaffold mainPage(Color backgroundColor, Color appBarColor, Color textColor1, Color textColor2, Function(int) _onItemTapped) {
+  Scaffold mainPage(Color primaryColor, Color secondaryColor, Color teritaoryColor, Function(int) onItemTapped) {
     return Scaffold(
     drawer: _selectedIndex == 0 ? MyDrawer() : null,
-    backgroundColor: backgroundColor,
+    backgroundColor: primaryColor,
     appBar: AppBar(
-      backgroundColor: appBarColor,
-      iconTheme: IconThemeData(color: textColor1,),
-      title: Text(_selectedIndex == 0 ? 'My Tasks' :
+      backgroundColor: primaryColor,
+      iconTheme: IconThemeData(color: teritaoryColor,),
+      title: Text(_selectedIndex == 0 ? 'Home' :
       _selectedIndex == 1 ? 'Completed Tasks' :
       _selectedIndex == 2 ? 'Favorites' : 'Profile'
-      , style: TextStyle(color: textColor1),),
+      , style: TextStyle(color: teritaoryColor),),
       centerTitle: true,
     ),
     body: Container(
-      color: backgroundColor,
+      color: Colors.transparent,
       child: IndexedStack(
         index: _selectedIndex,
         children: [
@@ -79,8 +79,8 @@ class _MainScreenState extends State<MainScreen> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.09,
       child: BottomNavigationBar(
-        selectedItemColor: Colors.white,
-        backgroundColor: Colors.blue,
+        selectedItemColor: secondaryColor,
+        backgroundColor: primaryColor,
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -102,8 +102,8 @@ class _MainScreenState extends State<MainScreen> {
         ],
         currentIndex: _selectedIndex,
         // selectedItemColor: appBarColor,
-        unselectedItemColor: textColor1.withOpacity(0.7),
-        onTap: _onItemTapped,
+        unselectedItemColor: teritaoryColor.withOpacity(0.7),
+        onTap: onItemTapped,
       ),
     ),
   );
